@@ -41,38 +41,38 @@ calibration_sum = 0
 first_last_numbers_list = []
 
 for line in content:
-    number_list = None
-    number_list_2 = None
+    first_number = None
+    second_number = None
     string_test = ''
     for string in line:
-        if number_list:
+        if first_number:
             break
         
         string_test = string_test + string
         if string.isdigit():
-            number_list = string
+            first_number = string
             break
 
         for number in numbers.keys():
             if number in string_test:
-                number_list = numbers[number]
+                first_number = numbers[number]
                 break
 
     string_test = ''
     for string in reversed(line):
-        if number_list_2:
+        if second_number:
             break
         string_test = string + string_test
         if string.isdigit():
-            number_list_2 = string
+            second_number = string
             break
 
         for number in numbers.keys():
             if number in string_test:
-                number_list_2 = numbers[number]
+                second_number = numbers[number]
                 break
 
-    line_number = int(number_list + number_list_2)
+    line_number = int(first_number + second_number)
     calibration_sum += line_number
 
 print(calibration_sum)
