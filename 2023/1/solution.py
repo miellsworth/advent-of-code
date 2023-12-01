@@ -1,30 +1,36 @@
 import re
 
-# Part one
-def extract_numbers_from_string(text):
-    numbers = re.findall(r'\d', text)
-    return numbers
-
+# Read input file
 content = []
 with open('input.txt', 'r') as f:
     for line in f:
         content.append(line.rstrip("\n"))
 
+# Solution - part 1
+
+# Define function to extract single digit integers
+def extract_numbers_from_string(text):
+    numbers = re.findall(r'\d', text)
+    return numbers
+
+# Loop through input file and append list with first and second number
 numbers_list = []
 for string in content:
-    numbers_list.append(extract_numbers_from_string(string))
+    numbers = extract_numbers_from_string(string)
+    first_number = numbers[0]
+    second_number = numbers[-1]
+    numbers_list.append([first_number, second_number])
 
-first_last_numbers_list = []
-for numbers in numbers_list:
-    first_last_numbers_list.append([numbers[0], numbers[-1]])
-
+# Concat first and second number strings, convert to int, and add to calibration sum
 calibration_sum = 0
-for number in first_last_numbers_list:
+for number in numbers_list:
     calibration_sum += int(number[0] + number[1])
 
 print(calibration_sum)
 
-# Part two
+# Solution - part 2
+
+# Create a dictionary to map text number string to corresponding int number string
 numbers = {
     'one': '1',
     'two': '2',
@@ -37,41 +43,50 @@ numbers = {
     'nine': '9',
 }
 
+# Loop through input file
 calibration_sum = 0
-first_last_numbers_list = []
-
 for line in content:
+    # Initialize first and second number variables as None to allow for loop breaks
     first_number = None
     second_number = None
-    string_test = ''
-    for string in line:
-        if first_number:
+    
+    # Iterate through characters in string, forwards
+    string = ''
+    for char in line:
+        # Check if current character is a digit
+        if char.isdigit():
+            first_number = char
             break
         
-        string_test = string_test + string
-        if string.isdigit():
-            first_number = string
-            break
-
+        # Check if string contains a text number
+        string = string + char
         for number in numbers.keys():
-            if number in string_test:
+            if number in string:
                 first_number = numbers[number]
                 break
 
-    string_test = ''
-    for string in reversed(line):
-        if second_number:
-            break
-        string_test = string + string_test
-        if string.isdigit():
-            second_number = string
+        if first_number:
             break
 
+    # Iterate through characters in string, backwards
+    string = ''
+    for char in reversed(line):
+        # Check if current character is a digit
+        if char.isdigit():
+            second_number = char
+            break
+
+        # Check if string contains a text number
+        string = char + string
         for number in numbers.keys():
-            if number in string_test:
+            if number in string:
                 second_number = numbers[number]
                 break
-
+        
+        if second_number:
+            break
+    
+    # Concat first and second number strings, convert to int, and add to calibration sum
     line_number = int(first_number + second_number)
     calibration_sum += line_number
 
