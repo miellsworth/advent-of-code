@@ -1,6 +1,6 @@
 import re
 
-# Read input file
+# Read input file as list of strings, remove "\n"
 content = []
 with open('input.txt', 'r') as f:
     for line in f:
