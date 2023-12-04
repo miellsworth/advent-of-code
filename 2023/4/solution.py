@@ -32,9 +32,10 @@ for card_num, card in cards.items():
 print(points)
 
 # Solution - part 2
+num_cards = len(cards)
 for card_num, card in cards.items():
     card_matches = []
     card['cards'] = card_matches
     if 'matches' in card:
-        card_matches = [i for i in range(card_num + 1, card_num + card['matches'] + 1)]
+        card_matches = [i for i in range(card_num + 1, card_num + card['matches'] + 1) if i <= num_cards]
         card['cards'] = card_matches
