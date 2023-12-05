@@ -39,3 +39,21 @@ for card_num, card in cards.items():
     if 'matches' in card:
         card_matches = [i for i in range(card_num + 1, card_num + card['matches'] + 1) if i <= num_cards]
         card['cards'] = card_matches
+
+matches = {}
+for key, value in cards.items():
+    matches[key] = value['cards']
+
+def recursive_test(list, dict, counter):
+    if list:
+        for i in list:
+            counter += 1
+            if dict[i]:
+                counter = recursive_test(dict[i], dict, counter)
+    return counter
+
+counter = 0
+for key, value in matches.items():
+    counter = recursive_test(value, matches, counter)
+    counter += 1
+print(counter)
