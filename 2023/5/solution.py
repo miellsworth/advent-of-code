@@ -36,26 +36,9 @@ garden_map = create_garden_map(garden_map, 'light_temp', content[132:160])
 garden_map = create_garden_map(garden_map, 'temp_humidity', content[161:199])
 garden_map = create_garden_map(garden_map, 'humidity_location', content[200:249])
 
-test_seed = garden_map['seeds'][0]
-print(test_seed)
-
-index_map = 24
-test_seed_soil_map = garden_map['seed_soil'][index_map]
-print(test_seed_soil_map)
-
-start = test_seed_soil_map['source_range_start']
-end = test_seed_soil_map['source_range_start'] + test_seed_soil_map['range_length']
-print(start)
-print(end)
-
-
-if start <= test_seed <= end:
-    print('yes')
-
-print(garden_map['humidity_location'])
-
+# Sample input
+seeds = [79, 14, 55, 13]
 garden_map = {
-    'seeds': [79, 14, 55, 13],
     'seed_soil': {
         0: {
             'dest_range_start': 50,
@@ -161,20 +144,23 @@ garden_map = {
         },
     },
 }
-print(garden_map)
 
-test_seed = garden_map['seeds'][0]
-print(test_seed)
+# for seed in seeds:
+locations = []
+dest_map = []
+source_map = []
+for idx, ranges in garden_map['seed_soil'].items():
+    range_length = ranges['range_length']
+    source_start = ranges['source_range_start']
+    dest_start = ranges['dest_range_start']
+    source_map.extend(list(range(source_start, source_start + range_length)))
+    dest_map.extend(list(range(dest_start, dest_start + range_length)))
 
-index_map = 24
-test_seed_soil_map = garden_map['seed_soil'][index_map]
-print(test_seed_soil_map)
+seed = seeds[0]
+if seed in source_map:
+    index = source_map.index(seed)
+    destination = dest_map[index]
+else:
+    destination = seed
 
-start = test_seed_soil_map['source_range_start']
-end = test_seed_soil_map['source_range_start'] + test_seed_soil_map['range_length']
-print(start)
-print(end)
-
-
-if start <= test_seed <= end:
-    print('yes')
+print(destination)
